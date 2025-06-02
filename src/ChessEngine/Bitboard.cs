@@ -1,7 +1,7 @@
 namespace ChessEngine;
 using System.Numerics;
 
-public static class Bitboards
+public static class Bitboard
 {
     public static ulong SetBit(ulong board, int square) => board | (1UL << square);
     public static ulong ClearBit(ulong board, int square) => board & ~(1UL << square);

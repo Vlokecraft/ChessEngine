@@ -8,18 +8,18 @@ public class Board
     public ulong BlackOccupancy => GetOccupancy(Color.Black);
     public ulong AllOccupancy => WhiteOccupancy | BlackOccupancy;
 
-    public Color SideToMove = Color.White;
+    public Color SideToMove;
 
-    public LoadBoard()
+    public Board(string fen)
     {
         ClearBitboards();
-        LoadFEN();
+        LoadFEN(fen);
     }
 
     public ulong GetOccupancy(Color color)
     {
         ulong occ = 0;
-        for (int i = 0; i < 6; i++;)
+        for (int i = 0; i < 6; i++)
         {
             occ |= Pieces[(int)color, i];
         }
@@ -36,38 +36,65 @@ public class Board
     void LoadFEN(string fen)
     {
         int pointer = 63;
+        int state = 0;
         foreach (char c in fen)
         {
-            if (c == ' ') break;
-
-            if (char.IsDigit(c))
+            if (state == 0) // Piece Placement
             {
-                pointer -= c - '0';
-            }
-            else if (char.IsLetter(c))
-            {
-                bool isWhite = char.IsUpper(c);
-                char piece = char.ToLower(c);
-
-                int color = isWhite ? 0 : 1;
-
-                int type = piece switch
+                if (c == ' ')
                 {
-                    'p' => (int)Piece.Pawn,
-                    'n' => (int)Piece.Knight,
-                    'b' => (int)Piece.Bishop,
-                    'r' => (int)Piece.Rook,
-                    'q' => (int)Piece.Queen,
-                    'k' => (int)Piece.King,
-                    _ => -1
-                };
-
-                if (type >= 0)
-                {
-                    Pieces[color, type] = Bitboard.SetBit(Pieces[color, type], pointer);
+                    state++;
                 }
-                pointer--;
+
+                if (char.IsDigit(c))
+                {
+                    pointer -= c - '0';
+                }
+                else if (char.IsLetter(c))
+                {
+                    bool isWhite = char.IsUpper(c);
+                    char piece = char.ToLower(c);
+
+                    int color = isWhite ? 0 : 1;
+
+                    int type = piece switch
+                    {
+                        'p' => (int)Piece.Pawn,
+                        'n' => (int)Piece.Knight,
+                        'b' => (int)Piece.Bishop,
+                        'r' => (int)Piece.Rook,
+                        'q' => (int)Piece.Queen,
+                        'k' => (int)Piece.King,
+                        _ => -1
+                    };
+
+                    if (type >= 0)
+                    {
+                        Pieces[color, type] = Bitboard.SetBit(Pieces[color, type], pointer);
+                    }
+                    pointer--;
+                }
             }
+            else if (state == 1) // Active Colour Check
+            {
+                if (c == 'w')
+                {
+                    SideToMove = Color.White;
+                }
+                else if (c == 'b')
+                {
+                    SideToMove = Color.Black;
+                }
+                else
+                {
+                    state++;
+                }
+            }
+            // -- NOT YET IMPLEMENTED --
+            // Castling Rights (state 2)
+            // En Passant Targets (state 3)
+            // Halfmove Clock (state 4)
+            // Fullmove Number (state 5)
         }
     }
 }
