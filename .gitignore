@@ -1,0 +1,14 @@
+bin/
+obj/
+*.user
+*.suo
+.vscode/
+*.log
+*.cache
+*.db
+*.DS_Store
+*.exe
+*.dll
+*.pdb
+project.lock.json
+project.fragment.lock.json
