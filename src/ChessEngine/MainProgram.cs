@@ -4,10 +4,11 @@ public class MainProgram
 {
     static void Main()
     {
-        Board board = new Board("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+        Board board = new Board("3N4/b1p2P2/p2n4/4p3/2k1P3/1nP3qR/1K1P4/4R3 w - - 0 1");
 
-        ulong moves = MoveGenerator.GenerateBlackPawnMoves(board);
+        ulong moves = MoveGenerator.GenerateWhitePawnPushes(board);
         PrintBitboard(moves);
+        board.Display();
     }
 
     public static void PrintBitboard(ulong bitboard)
