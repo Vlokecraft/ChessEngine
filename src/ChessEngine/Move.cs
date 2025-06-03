@@ -14,15 +14,11 @@ public struct Move
 {
     public int From;
     public int To;
-    public MoveType Type;
-    public Piece? PromotionPiece;
 
-    public Move(int from, int to, MoveType type = MoveType.Normal, Piece? promotionPiece = null)
+    public Move(int from, int to)
     {
         From = from;
         To = to;
-        Type = type;
-        PromotionPiece = promotionPiece;
     }
 
     public override string ToString()

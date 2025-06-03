@@ -9,6 +9,13 @@ public class MainProgram
         ulong moves = MoveGenerator.GenerateWhitePawnPushes(board);
         PrintBitboard(moves);
         board.Display();
+
+        Console.WriteLine("Generating all magic data...");
+        var magicData = MagicMaker.GenerateAllMagicData();
+        Console.WriteLine("Magic data generated. Saving to file...");
+        string filePath = "magic_data.json";
+        MagicMaker.SaveMagicDataToFile(filePath, magicData);
+        Console.WriteLine("Program finished. Check the output file.");
     }
 
     public static void PrintBitboard(ulong bitboard)

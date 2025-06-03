@@ -9,4 +9,7 @@ public static class Bitboard
 
     public static int PopCount(ulong bb) => BitOperations.PopCount(bb);
     public static int LSB(ulong bb) => BitOperations.TrailingZeroCount(bb);
+
+    public static ulong PopBit(ulong board, int square) => board ^ (1UL << square);
+    public static bool IsOnBoard(int squareIndex) => squareIndex >= 0 && squareIndex <= 63;
 }
